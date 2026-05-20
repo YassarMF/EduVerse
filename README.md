@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EduVerse 🚀
 
 **Tim:** [Nama Tim Kamu]
@@ -103,3 +104,6 @@ Kamu dapat dengan mudah menambahkan kalkulasi Level baru atau menambahkan fitur 
 ---
 
 Dibuat dengan ❤️ untuk lomba Techne Fest 2026.
+=======
+# EduVerse
+>>>>>>> a7310c284ac1fe4e9a894e5b87109a5ddb52fb35
