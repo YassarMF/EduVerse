@@ -8,7 +8,18 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -20,10 +31,34 @@
     <main class="main-content">
       
       <!-- Page Header -->
-      <header class="page-header">
-        <h1 class="page-title">🏆 Leaderboard Global</h1>
-        <p class="page-subtitle">Peringkat pencetak XP terbanyak minggu ini.</p>
+      <header class="page-header" style="text-align: center;">
+        <h1 class="page-title">🏆 Global Leaderboard</h1>
+        <p class="page-subtitle">Peringkat para Explorer terbaik di seluruh semesta EduVerse.</p>
       </header>
+      
+      <style>
+        @media (max-width: 600px) {
+          .hide-on-mobile {
+            display: none !important;
+          }
+          .leaderboard-row td {
+            padding: 0.5rem 0.3rem !important;
+          }
+          .leaderboard-table thead th {
+            padding: 0.5rem 0.3rem !important;
+            font-size: 0.65rem !important;
+          }
+          #leaderboard-table {
+            table-layout: fixed !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+          #leaderboard-table th:nth-child(1) { width: 15% !important; }
+          #leaderboard-table th:nth-child(2) { width: 55% !important; }
+          #leaderboard-table th:nth-child(4) { width: 15% !important; }
+          #leaderboard-table th:nth-child(5) { width: 15% !important; }
+        }
+      </style>
 
       <!-- Leaderboard Card -->
       <div class="neo-card-static" id="leaderboard-container">
@@ -35,15 +70,15 @@
         </div>
 
         <!-- Table (hidden initially) -->
-        <div id="leaderboard-table-wrapper" class="hidden">
-          <table class="leaderboard-table" id="leaderboard-table">
+        <div id="leaderboard-table-wrapper" class="hidden" style="width: 100%;">
+          <table class="leaderboard-table" id="leaderboard-table" style="width: 100%;">
             <thead>
-              <tr>
-                <th style="width: 60px;">Rank</th>
+               <tr>
+                <th>Rank</th>
                 <th>Explorer</th>
-                <th>Sekolah</th>
-                <th style="width: 100px;">XP</th>
-                <th style="width: 80px;">Modul</th>
+                <th class="hide-on-mobile">Sekolah</th>
+                <th>XP</th>
+                <th>Modul</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body">
@@ -97,8 +132,8 @@
 
   <!-- Script -->
   <script type="module">
-    import { AppState, UI } from '../assets/js/core/app.js';
-    import { getLeaderboard, isFirebaseReady } from '../assets/js/core/firebase-config.js';
+    import { AppState, UI } from '@/core/app.js';
+    import { getLeaderboard, isFirebaseReady } from '@/config/firebase-config.js';
 
     // Auth check
     if (!AppState.requireAuth()) {
@@ -196,31 +231,32 @@
 
       return `
         <tr class="${rowClass}">
-          <td style="text-align: center;">${rankDisplay}</td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <td style="text-align: center; vertical-align: middle;">${rankDisplay}</td>
+          <td style="vertical-align: middle;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
               <div style="
-                width: 38px; height: 38px;
+                width: 32px; height: 32px;
                 background: ${isCurrentUser ? 'var(--card-lavender)' : 'var(--gray-100)'};
                 border: 2px solid var(--border);
                 border-radius: var(--radius-full);
                 display: flex; align-items: center; justify-content: center;
-                font-size: 1rem;
+                font-size: 0.9rem;
+                flex-shrink: 0;
               ">🧑‍🚀</div>
-              <div>
-                <div style="font-family: var(--font-heading); font-weight: 800; font-size: 0.95rem;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family: var(--font-heading); font-weight: 800; font-size: 0.85rem; line-height: 1.2; word-break: break-word;">
                   ${user.displayName || user.username}
-                  ${isCurrentUser ? '<span style="font-size: 0.7rem; color: var(--primary);"> (Kamu)</span>' : ''}
+                  ${isCurrentUser ? '<br><span style="font-size: 0.65rem; color: var(--primary);"> (Kamu)</span>' : ''}
                 </div>
               </div>
             </div>
           </td>
-          <td style="font-size: 0.85rem; color: var(--text-muted);">${user.school || '—'}</td>
-          <td>
-            <span class="neo-badge neo-badge-yellow">⚡ ${user.xp || 0}</span>
+          <td class="hide-on-mobile" style="font-size: 0.75rem; color: var(--text-muted); vertical-align: middle; word-break: break-word;">${user.school || '—'}</td>
+          <td style="vertical-align: middle;">
+            <span class="neo-badge neo-badge-yellow" style="font-size: 0.75rem; padding: 0.2rem 0.4rem;">⚡ ${user.xp || 0}</span>
           </td>
-          <td style="text-align: center; font-family: var(--font-heading); font-weight: 800;">
-            ${modulesCount}/8
+          <td style="text-align: center; font-family: var(--font-heading); font-weight: 800; font-size: 0.85rem; vertical-align: middle;">
+            ${modulesCount}/20
           </td>
         </tr>
       `;

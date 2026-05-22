@@ -8,9 +8,20 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
 
 
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -43,10 +54,7 @@
         </div>
       </div>
 
-      <!-- Tracks Container -->
-      <div id="tracks-container">
-        <!-- Rendered by JS -->
-      </div>
+
 
       <!-- Quick Links -->
       <div class="quick-links" style="margin-top: 2.5rem;">
@@ -98,8 +106,8 @@
 
   <!-- Script -->
   <script type="module">
-    import { AppState, UI } from '../assets/js/core/app.js?v=3';
-    import { renderTracksList } from '../assets/js/data/tracks-data.js?v=3';
+    import { AppState, UI } from '@/core/app.js';
+
 
     // Auth check
     if (!AppState.requireAuth()) {
@@ -121,11 +129,19 @@
       if (!timerText) return;
       const m = Math.floor(seconds / 60).toString().padStart(2, '0');
       const s = (seconds % 60).toString().padStart(2, '0');
-      timerText.textContent = `${m}:${s}`;
       
       const percent = Math.min((seconds / DAILY_GOAL_SEC) * 100, 100);
       const deg = (percent / 100) * 360;
-      timerChart.style.background = `conic-gradient(var(--primary) ${deg}deg, var(--white) ${deg}deg)`;
+      
+      if (seconds >= DAILY_GOAL_SEC) {
+        timerChart.style.background = `var(--success)`;
+        timerText.innerHTML = `${m}:${s} <i class="fa-solid fa-circle-check" style="color: var(--success); margin-left: 0.25rem;"></i>`;
+        timerText.style.color = "var(--success)";
+      } else {
+        timerText.textContent = `${m}:${s}`;
+        timerText.style.color = "";
+        timerChart.style.background = `conic-gradient(var(--primary) ${deg}deg, var(--white) ${deg}deg)`;
+      }
     }
 
     // Initial load
@@ -140,8 +156,7 @@
       updateTimerUI(e.detail);
     });
 
-    // Render Tracks Container
-    renderTracksList('tracks-container');
+
   </script>
 </body>
 </html>

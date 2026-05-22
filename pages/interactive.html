@@ -8,12 +8,23 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
   
   <!-- CodeMirror CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/monokai.min.css">
 
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -104,7 +115,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
 
   <!-- Interactive Logic -->
-  <script type="module" src="../assets/js/pages/interactive.js"></script>
+  <script type="module" src="/src/pages/interactive.js"></script>
 
 </body>
 </html>

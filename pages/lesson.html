@@ -8,9 +8,20 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
   
 
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -81,7 +92,7 @@
   </div>
 
   <!-- Lesson Logic -->
-  <script type="module" src="../assets/js/pages/lesson.js?v=5"></script>
+  <script type="module" src="/src/pages/lesson.js"></script>
 
 </body>
 </html>

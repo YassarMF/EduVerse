@@ -6,7 +6,18 @@
   <title>Career Tracks | EduVerse</title>
   <meta name="description" content="Jelajahi jalur karir teknologi. Lihat skill yang dibutuhkan dan cari lowongan kerja dengan AI Agent.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -23,7 +34,7 @@
       <div id="api-key-notice" class="hidden" style="margin-bottom: 1.5rem;">
         <div class="neo-card-static neo-card-lemon" style="padding: 1rem 1.5rem;">
           <p style="font-family: var(--font-heading); font-weight: 800; font-size: 0.9rem;">⚠️ Gemini API key belum dikonfigurasi. Fitur AI Agent tidak akan berfungsi.</p>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Buka <code style="background: var(--card-lemon); padding: 0.1rem 0.3rem; border-radius: 4px;">assets/js/services/gemini.js</code> dan masukkan API key-mu.</p>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Buka <code style="background: var(--card-lemon); padding: 0.1rem 0.3rem; border-radius: 4px;">src/features/ai/gemini.js</code> dan masukkan API key-mu.</p>
         </div>
       </div>
 
@@ -58,8 +69,8 @@
   </div>
 
   <script type="module">
-    import { AppState, ModuleData, UI } from '../assets/js/core/app.js';
-    import { isGeminiReady, generateJobListings } from '../assets/js/services/gemini.js';
+    import { AppState, ModuleData, UI } from '@/core/app.js';
+    import { isGeminiReady, generateJobListings } from '@/features/ai/gemini.js';
 
     if (!AppState.requireAuth()) { /* redirects */ }
 
@@ -73,7 +84,6 @@
       document.getElementById('api-key-notice').style.display = 'block';
     }
 
-    // Career tracks data
     const careerTracks = [
       {
         emoji: '📊',
@@ -82,34 +92,34 @@
         description: 'Menganalisis data bisnis untuk mengambil keputusan strategis. Cocok untuk kamu yang suka angka dan pola!',
         skills: ['Excel', 'SQL', 'Python', 'Statistik', 'Visualisasi Data', 'Machine Learning'],
         salary: 'Rp 7 — 18 juta/bulan',
-        relatedModules: ['mod_01_intro', 'mod_02_excel', 'mod_03_stats', 'mod_04_sql', 'mod_05_dataviz', 'mod_06_python']
+        relatedModules: ['mod_01_intro', 'mod_02_excel', 'mod_03_stats', 'mod_04_sql', 'mod_05_dataviz', 'mod_06_python', 'mod_07_advanced', 'mod_08_ml_intro']
       },
       {
-        emoji: '🖥️',
-        title: 'Software Engineer',
+        emoji: '💻',
+        title: 'Web Developer',
         color: 'var(--card-lavender)',
-        description: 'Membangun aplikasi dan sistem software. Dari web app hingga mobile, semua dimulai dari sini!',
-        skills: ['JavaScript', 'Python', 'Git', 'API Design', 'Database', 'Problem Solving'],
-        salary: 'Rp 10 — 30 juta/bulan',
-        relatedModules: ['mod_04_sql', 'mod_06_python']
+        description: 'Membangun antarmuka dan interaksi pada website. Membuat desain statis menjadi aplikasi hidup yang bisa digunakan!',
+        skills: ['HTML', 'CSS', 'JavaScript', 'Responsive Design', 'Problem Solving'],
+        salary: 'Rp 6 — 15 juta/bulan',
+        relatedModules: ['html_01_intro', 'html_02_text', 'html_03_links', 'html_04_images', 'html_05_lists', 'html_06_css_intro']
       },
       {
-        emoji: '🧠',
-        title: 'Data Scientist',
+        emoji: '🐍',
+        title: 'Backend Engineer (Python)',
         color: 'var(--card-mint)',
-        description: 'Menggali insight dari data menggunakan statistik dan machine learning. The sexiest job of the 21st century!',
-        skills: ['Python', 'Statistik', 'Machine Learning', 'Deep Learning', 'SQL', 'Matematika'],
-        salary: 'Rp 12 — 35 juta/bulan',
-        relatedModules: ['mod_03_stats', 'mod_06_python', 'mod_07_advanced', 'mod_08_ml_intro']
+        description: 'Membangun sistem di balik layar yang kuat dan aman. Mengelola database, API, dan logika aplikasi.',
+        skills: ['Python', 'Database', 'API Design', 'System Architecture', 'Logic', 'Security'],
+        salary: 'Rp 10 — 25 juta/bulan',
+        relatedModules: ['py_01_intro', 'py_02_vars', 'py_03_logic']
       },
       {
-        emoji: '🔌',
-        title: 'IoT Engineer',
+        emoji: '🎨',
+        title: 'UI/UX Designer',
         color: 'var(--card-peach)',
-        description: 'Menghubungkan perangkat fisik ke internet. Smart home, wearables, dan industri 4.0 menantimu!',
-        skills: ['C/C++', 'Python', 'Networking', 'Embedded Systems', 'Cloud', 'Data Analytics'],
-        salary: 'Rp 8 — 22 juta/bulan',
-        relatedModules: ['mod_06_python', 'mod_07_advanced']
+        description: 'Merancang pengalaman pengguna dan tampilan visual aplikasi yang indah serta mudah digunakan.',
+        skills: ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'Visual Design', 'Empathy'],
+        salary: 'Rp 7 — 20 juta/bulan',
+        relatedModules: ['ux_01_intro', 'ux_02_principles', 'ux_03_figma']
       }
     ];
 
@@ -184,7 +194,7 @@
           <div class="ai-empty-state">
             <p style="font-size: 2rem; margin-bottom: 0.5rem;">🔑</p>
             <p style="font-family: var(--font-heading); font-weight: 800;">API Key Belum Dikonfigurasi</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Masukkan Gemini API key di assets/js/services/gemini.js untuk menggunakan fitur ini.</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Masukkan Gemini API key di src/features/ai/gemini.js untuk menggunakan fitur ini.</p>
           </div>
         `;
         return;

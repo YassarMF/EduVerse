@@ -8,7 +8,18 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body class="auth-page">
 
@@ -34,41 +45,65 @@
 
       <!-- Title -->
       <div class="text-center" style="margin-bottom: 2rem;">
-        <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Selamat Datang, Explorer! 🚀</h1>
-        <p class="text-muted" style="font-size: 0.9rem;">Masukkan data kamu untuk mulai petualangan belajar.</p>
+        <h1 id="auth-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Selamat Datang, Explorer! 🚀</h1>
+        <p id="auth-subtitle" class="text-muted" style="font-size: 0.9rem;">Masukkan email dan password untuk masuk.</p>
       </div>
 
       <!-- Login Form -->
       <form id="login-form" autocomplete="off">
-        <div class="auth-field">
+        <!-- Name Field (Hidden on Login) -->
+        <div id="field-name" class="auth-field" style="display: none;">
           <label class="auth-label" for="input-name">
-            <i class="fa-solid fa-user" style="margin-right: 0.3rem;"></i> Nama
+            <i class="fa-solid fa-user" style="margin-right: 0.3rem;"></i> Nama Lengkap
           </label>
           <input
             type="text"
             id="input-name"
             class="neo-input"
-            placeholder="Masukkan namamu..."
-            required
-            minlength="2"
-            maxlength="30"
-            autocomplete="off"
+            placeholder="Masukkan nama kamu..."
+            autocomplete="name"
           >
         </div>
 
-        <div class="auth-field">
+        <!-- School Field (Hidden on Login) -->
+        <div id="field-school" class="auth-field" style="display: none;">
           <label class="auth-label" for="input-school">
-            <i class="fa-solid fa-school" style="margin-right: 0.3rem;"></i> Asal Sekolah
+            <i class="fa-solid fa-school" style="margin-right: 0.3rem;"></i> Asal Sekolah/Kampus
           </label>
           <input
             type="text"
             id="input-school"
             class="neo-input"
-            placeholder="Nama sekolah/kampusmu..."
+            placeholder="Masukkan asal sekolah/kampus..."
+          >
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="input-email">
+            <i class="fa-solid fa-envelope" style="margin-right: 0.3rem;"></i> Email
+          </label>
+          <input
+            type="email"
+            id="input-email"
+            class="neo-input"
+            placeholder="Masukkan email..."
             required
-            minlength="2"
-            maxlength="60"
-            autocomplete="off"
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="input-password">
+            <i class="fa-solid fa-lock" style="margin-right: 0.3rem;"></i> Password
+          </label>
+          <input
+            type="password"
+            id="input-password"
+            class="neo-input"
+            placeholder="Masukkan password..."
+            required
+            minlength="6"
+            autocomplete="current-password"
           >
         </div>
 
@@ -86,8 +121,9 @@
       </form>
 
       <!-- Footer -->
-      <p class="text-center text-muted" style="margin-top: 1.5rem; font-size: 0.75rem;">
-        Data kamu tersimpan aman. Masukkan nama yang sama untuk melanjutkan progress. ✨
+      <p class="text-center text-muted" style="margin-top: 1.5rem; font-size: 0.85rem;">
+        <span id="toggle-text">Belum punya akun?</span>
+        <a href="#" id="toggle-auth" style="font-weight: bold; text-decoration: none;">Daftar di sini</a>
       </p>
     </div>
   </div>
@@ -95,7 +131,7 @@
 
   <!-- Script -->
   <script type="module">
-    import { AppState, UI } from './assets/js/core/app.js';
+    import { AppState, UI } from '@/core/app.js';
 
     // If already logged in, redirect to dashboard
     if (AppState.getUser()) {
@@ -103,13 +139,55 @@
     }
 
     const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('input-email');
+    const passwordInput = document.getElementById('input-password');
+    const nameField = document.getElementById('field-name');
     const nameInput = document.getElementById('input-name');
+    const schoolField = document.getElementById('field-school');
     const schoolInput = document.getElementById('input-school');
     const loginBtn = document.getElementById('login-btn');
     const btnText = document.getElementById('login-btn-text');
     const btnSpinner = document.getElementById('login-btn-spinner');
     const errorBox = document.getElementById('login-error');
     const errorText = document.getElementById('login-error-text');
+    
+    // Toggle Elements
+    const authTitle = document.getElementById('auth-title');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const toggleText = document.getElementById('toggle-text');
+    const toggleAuth = document.getElementById('toggle-auth');
+    
+    let isLoginMode = true;
+
+    toggleAuth.addEventListener('click', (e) => {
+      e.preventDefault();
+      isLoginMode = !isLoginMode;
+      hideError();
+      
+      if (isLoginMode) {
+        authTitle.innerHTML = 'Selamat Datang, Explorer! 🚀';
+        authSubtitle.textContent = 'Masukkan email dan password untuk masuk.';
+        btnText.textContent = 'Masuk';
+        toggleText.textContent = 'Belum punya akun?';
+        toggleAuth.textContent = 'Daftar di sini';
+        
+        nameField.style.display = 'none';
+        schoolField.style.display = 'none';
+        nameInput.required = false;
+        schoolInput.required = false;
+      } else {
+        authTitle.innerHTML = 'Mulai Petualangan! 🌟';
+        authSubtitle.textContent = 'Buat akun baru untuk mulai belajar.';
+        btnText.textContent = 'Daftar Sekarang';
+        toggleText.textContent = 'Sudah punya akun?';
+        toggleAuth.textContent = 'Masuk di sini';
+        
+        nameField.style.display = 'block';
+        schoolField.style.display = 'block';
+        nameInput.required = true;
+        schoolInput.required = true;
+      }
+    });
 
     function showError(msg) {
       errorText.textContent = msg;
@@ -133,25 +211,32 @@
       e.preventDefault();
       hideError();
 
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
       const name = nameInput.value.trim();
       const school = schoolInput.value.trim();
 
-      if (!name || name.length < 2) {
-        showError('Nama harus minimal 2 karakter.');
-        nameInput.focus();
+      if (!email || !email.includes('@')) {
+        showError('Email tidak valid.');
+        emailInput.focus();
         return;
       }
 
-      if (!school || school.length < 2) {
-        showError('Nama sekolah harus minimal 2 karakter.');
-        schoolInput.focus();
+      if (!password || password.length < 6) {
+        showError('Password harus minimal 6 karakter.');
+        passwordInput.focus();
         return;
       }
 
       setLoading(true);
 
       try {
-        const user = await AppState.login(name, school);
+        let user;
+        if (isLoginMode) {
+          user = await AppState.login(email, password);
+        } else {
+          user = await AppState.register(email, password, name, school);
+        }
         
         if (user) {
           // Small delay for UX
@@ -163,8 +248,21 @@
           setLoading(false);
         }
       } catch (error) {
-        console.error('Login error:', error);
-        showError(error.message || 'Gagal masuk. Periksa koneksi internet.');
+        console.error('Auth error:', error);
+        
+        // Handle Firebase Error Codes
+        let errorMsg = 'Terjadi kesalahan. Periksa koneksi internet.';
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+            errorMsg = 'Email atau password salah.';
+        } else if (error.code === 'auth/email-already-in-use') {
+            errorMsg = 'Email sudah digunakan. Silakan masuk.';
+        } else if (error.code === 'auth/weak-password') {
+            errorMsg = 'Password terlalu lemah (minimal 6 karakter).';
+        } else if (error.code === 'auth/too-many-requests') {
+            errorMsg = 'Terlalu banyak percobaan. Coba lagi nanti.';
+        }
+        
+        showError(errorMsg);
         setLoading(false);
       }
     });

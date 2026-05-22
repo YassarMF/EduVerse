@@ -6,7 +6,18 @@
   <title>Materi Belajar | EduVerse</title>
   <meta name="description" content="Ikuti syllabus interaktif Data Analyst Track. Selesaikan modul demi modul dan kuasai skill analisis data!">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+
+  <!-- Konfigurasi Path Aliases Native Browser -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@/config/": "/src/config/",
+      "@/core/": "/src/core/",
+      "@/features/": "/src/features/"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -29,15 +40,16 @@
   </div>
 
   <script type="module">
-    import { AppState, UI } from '../assets/js/core/app.js?v=3';
-    import { renderTracksList } from '../assets/js/data/tracks-data.js?v=3';
+    import { AppState, UI } from '@/core/app.js';
+    import { renderTracksList } from '@/features/courses/tracks-data.js';
 
     if (!AppState.requireAuth()) { /* redirects */ }
 
     UI.renderSidebar('course');
     UI.renderMobileNav('course');
 
-    renderTracksList('tracks-container');
+    const currentUser = AppState.getUser();
+    renderTracksList('tracks-container', currentUser);
   </script>
 </body>
 </html>
