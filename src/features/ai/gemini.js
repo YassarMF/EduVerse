@@ -13,7 +13,10 @@
 // ║       🔑 GEMINI API KEY — PASTE YOURS HERE                ║
 // ╚═══════════════════════════════════════════════════════════╝
 
-const GEMINI_API_KEY_BASE64 = "QUl6YVN5RDJvLVZkdGtVUmVCS1BheGJYakgwM2JRLVZ5YzJTZHVn";
+// 1. Buka file `tools/obfuscator.html` di browser Anda.
+// 2. Masukkan API Key asli Anda, klik "Obfuscate".
+// 3. Copy hasilnya dan paste di dalam tanda kutip di bawah ini.
+const GEMINI_API_KEY_BASE64 = "YOUR_BASE64_KEY_HERE";
 const GEMINI_API_KEY = atob(GEMINI_API_KEY_BASE64);
 
 // ── Gemini API Config ──────────────────────────────────────────

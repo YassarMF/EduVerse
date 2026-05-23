@@ -8,15 +8,15 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/main.css">
 
   <!-- Konfigurasi Path Aliases Native Browser -->
   <script type="importmap">
   {
     "imports": {
-      "@/config/": "/src/config/",
-      "@/core/": "/src/core/",
-      "@/features/": "/src/features/"
+      "@/config/": "./src/config/",
+      "@/core/": "./src/core/",
+      "@/features/": "./src/features/"
     }
   }
   </script>
@@ -251,15 +251,21 @@
         console.error('Auth error:', error);
         
         // Handle Firebase Error Codes
-        let errorMsg = 'Terjadi kesalahan. Periksa koneksi internet.';
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-            errorMsg = 'Email atau password salah.';
+        let errorMsg = 'Terjadi kesalahan (' + (error.code || error.message || 'Unknown') + '). Periksa koneksi internet.';
+        if (error.code === 'auth/user-not-found') {
+            errorMsg = 'Akun belum terdaftar. Silakan daftar terlebih dahulu.';
+        } else if (error.code === 'auth/wrong-password') {
+            errorMsg = 'Kredensial salah (password tidak sesuai).';
+        } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-login-credentials') {
+            errorMsg = 'Kredensial salah atau akun belum terdaftar.';
         } else if (error.code === 'auth/email-already-in-use') {
             errorMsg = 'Email sudah digunakan. Silakan masuk.';
         } else if (error.code === 'auth/weak-password') {
             errorMsg = 'Password terlalu lemah (minimal 6 karakter).';
         } else if (error.code === 'auth/too-many-requests') {
             errorMsg = 'Terlalu banyak percobaan. Coba lagi nanti.';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMsg = 'Format email tidak valid.';
         }
         
         showError(errorMsg);

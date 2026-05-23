@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Key Obfuscator</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f4f4f5;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: monospace;
+      margin-top: 0.5rem;
+      resize: vertical;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+    button:hover { background: #1d4ed8; }
+    .result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-left: 4px solid #10b981;
+      word-break: break-all;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🔒 Base64 Obfuscator</h2>
+    <p style="color: #666; font-size: 0.9rem;">Masukkan API Key Anda di bawah ini untuk menyembunyikannya (obfuscate) ke format Base64.</p>
+    
+    <textarea id="input" rows="3" placeholder="Paste API Key di sini..."></textarea>
+    <button onclick="obfuscate()">Obfuscate Key</button>
+
+    <div id="result-container" style="display: none;">
+      <h4 style="margin-bottom: 0.5rem;">Hasil Obfuscation (Base64):</h4>
+      <div class="result" id="result"></div>
+      
+      <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Cara pakainya di `gemini.js`:</h4>
+      <pre style="background: #1e293b; color: #fff; padding: 1rem; border-radius: 6px; font-size: 0.85rem; overflow-x: auto;"><code id="code-snippet"></code></pre>
+    </div>
+  </div>
+
+  <script>
+    function obfuscate() {
+      const input = document.getElementById('input').value.trim();
+      if (!input) return alert('Masukkan API key terlebih dahulu!');
+
+      // Encode to Base64
+      const base64 = btoa(input);
+      
+      // Tampilkan hasil
+      document.getElementById('result-container').style.display = 'block';
+      document.getElementById('result').textContent = base64;
+      
+      // Tampilkan snippet kode
+      const snippet = `const GEMINI_API_KEY_BASE64 = "${base64}";\nconst GEMINI_API_KEY = atob(GEMINI_API_KEY_BASE64);`;
+      document.getElementById('code-snippet').textContent = snippet;
+    }
+  </script>
+</body>
+</html>
